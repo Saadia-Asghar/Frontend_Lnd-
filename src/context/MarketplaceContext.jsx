@@ -5,23 +5,23 @@ const MarketplaceContext = createContext();
 
 export function MarketplaceProvider({ children }) {
   const [items, setItems] = useState(() => {
-    const saved = localStorage.getItem('campusmart_items');
+    const saved = localStorage.getItem('giki_mart_items_v2');
     return saved ? JSON.parse(saved) : initialItems;
   });
 
   const [savedItemIds, setSavedItemIds] = useState(() => {
-    const saved = localStorage.getItem('campusmart_saved_ids');
+    const saved = localStorage.getItem('giki_mart_saved_ids');
     return saved ? JSON.parse(saved) : [];
   });
 
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    localStorage.setItem('campusmart_items', JSON.stringify(items));
+    localStorage.setItem('giki_mart_items_v2', JSON.stringify(items));
   }, [items]);
 
   useEffect(() => {
-    localStorage.setItem('campusmart_saved_ids', JSON.stringify(savedItemIds));
+    localStorage.setItem('giki_mart_saved_ids', JSON.stringify(savedItemIds));
   }, [savedItemIds]);
 
   const addItem = (newItem) => {
@@ -29,15 +29,16 @@ export function MarketplaceProvider({ children }) {
       ...newItem,
       id: `item-${Date.now()}`,
       createdAt: 'Just now',
+      timeAgo: 'Just now',
       isNew: newItem.condition === 'New',
       seller: {
-        name: newItem.sellerName || 'Verified Student',
+        name: newItem.sellerName || 'Verified GIKian',
         email: newItem.sellerEmail,
-        phone: newItem.sellerPhone || '+1 (555) 019-2834',
+        phone: newItem.sellerPhone || '+92 300 1234567',
         avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80',
         responseTime: '< 30 mins',
         rating: '5.0',
-        campusRole: 'Student • Verified Campus Member'
+        campusRole: 'GIKI Student • Verified Campus Member'
       }
     };
     setItems((prev) => [itemWithDefaults, ...prev]);

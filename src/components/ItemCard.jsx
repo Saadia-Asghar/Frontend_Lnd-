@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Heart } from 'lucide-react';
+import { Heart, MapPin } from 'lucide-react';
 import { useMarketplace } from '../context/MarketplaceContext';
 
 export default function ItemCard({ item }) {
@@ -10,7 +10,7 @@ export default function ItemCard({ item }) {
   return (
     <div className="group relative flex flex-col transition-all duration-200">
       
-      {/* 1. Upper Product Image Box (Matching Dribbble soft grey rounded container) */}
+      {/* 1. Upper Product Image Box (Dribbble soft tinted container) */}
       <div className="relative aspect-square sm:aspect-[4/3] w-full bg-[#EEF2F7] rounded-2xl sm:rounded-3xl overflow-hidden p-3 sm:p-4 flex items-center justify-center transition-transform duration-200 group-hover:scale-[1.02]">
         
         {/* Product Image */}
@@ -21,10 +21,14 @@ export default function ItemCard({ item }) {
           className="w-full h-full object-cover rounded-xl sm:rounded-2xl mix-blend-multiply group-hover:scale-105 transition-transform duration-300"
         />
 
-        {/* Condition pill or New badge on image */}
-        {item.isNew && (
+        {/* Condition pill */}
+        {item.isNew ? (
           <span className="absolute top-3 left-3 px-2 py-0.5 rounded-full bg-surface text-brand text-[10px] font-bold shadow-xs">
             NEW
+          </span>
+        ) : (
+          <span className="absolute top-3 left-3 px-2 py-0.5 rounded-full bg-surface/90 text-navy-secondary text-[10px] font-semibold backdrop-blur-xs">
+            {item.condition}
           </span>
         )}
 
@@ -33,10 +37,14 @@ export default function ItemCard({ item }) {
       {/* 2. Content Details below image */}
       <div className="pt-3 px-1 flex flex-col gap-1">
         
-        {/* Time Ago (e.g. '4 hours ago' from Dribbble shot) */}
-        <span className="text-[11px] font-medium text-navy-muted leading-none">
-          {item.timeAgo || item.createdAt}
-        </span>
+        {/* Time Ago & GIKI Meetup Location */}
+        <div className="flex items-center justify-between text-[11px] font-medium text-navy-muted">
+          <span>{item.timeAgo || item.createdAt}</span>
+          <span className="flex items-center gap-0.5 truncate max-w-[120px]">
+            <MapPin className="w-3 h-3 text-coral flex-shrink-0" />
+            <span className="truncate">{item.campusLocation}</span>
+          </span>
+        </div>
 
         {/* Title & Size row */}
         <div className="flex items-start justify-between gap-2 mt-0.5">
@@ -54,10 +62,10 @@ export default function ItemCard({ item }) {
           )}
         </div>
 
-        {/* Price & Heart Row */}
+        {/* Price in PKR Rupees & Heart Row */}
         <div className="flex items-center justify-between pt-0.5">
           <span className="text-base sm:text-lg font-bold text-navy">
-            ${item.price}
+            Rs. {Number(item.price).toLocaleString()}
           </span>
 
           <button
@@ -84,7 +92,6 @@ export default function ItemCard({ item }) {
         aria-label={`View ${item.title}`}
         className="absolute inset-0 z-0"
       />
-      {/* Interactive buttons sit on z-10 */}
       <div className="pointer-events-none relative z-10" />
     </div>
   );

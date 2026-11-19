@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Search, Bell, X } from 'lucide-react';
+import { Search, Bell, X, ShieldCheck } from 'lucide-react';
 import { useMarketplace } from '../context/MarketplaceContext';
 
 export default function Navbar() {
@@ -23,19 +23,22 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-20 gap-4">
           
-          {/* Logo (Orange 'On' badge + Brand Text from Dribbble shot) */}
+          {/* GIKI CampusMart Logo */}
           <Link to="/" className="flex items-center gap-2.5 flex-shrink-0 group">
-            {/* Round orange logo badge */}
             <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-coral flex items-center justify-center text-white font-bold text-sm sm:text-base shadow-sm transition-transform duration-200 group-hover:scale-105">
               <span>On</span>
             </div>
-            {/* Blue Brand Text */}
-            <span className="text-xl sm:text-2xl font-bold tracking-tight text-brand">
-              Campus<span className="text-navy">Mart</span>
-            </span>
+            <div className="flex flex-col">
+              <span className="text-xl sm:text-2xl font-bold tracking-tight text-brand leading-none">
+                Campus<span className="text-navy">Mart</span>
+              </span>
+              <span className="text-[10px] font-bold text-coral tracking-wider mt-1 uppercase">
+                GIKI Edition • Topi
+              </span>
+            </div>
           </Link>
 
-          {/* Search Bar on Medium/Desktop screens */}
+          {/* Search Bar on Desktop */}
           <form 
             onSubmit={handleSearchSubmit}
             className="flex-1 max-w-md hidden md:block relative"
@@ -44,7 +47,7 @@ export default function Navbar() {
               <Search className="w-4 h-4 text-navy-muted absolute left-3.5 pointer-events-none" />
               <input
                 type="text"
-                placeholder="Search items, textbooks, sneakers..."
+                placeholder="Search GIKI textbooks, calculators, hostel gear..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full bg-inset hover:bg-slate-100 focus:bg-white text-navy placeholder-navy-muted text-sm rounded-full pl-10 pr-4 py-2.5 border border-transparent focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/10 transition-all duration-200"
@@ -61,9 +64,15 @@ export default function Navbar() {
             </div>
           </form>
 
-          {/* Right Action Icons (Search + Bell with red badge '2') */}
+          {/* Right Action Icons */}
           <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
             
+            {/* GIKI Verified Badge */}
+            <div className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-brand-light text-brand text-xs font-bold">
+              <ShieldCheck className="w-3.5 h-3.5" />
+              <span>@giki.edu.pk</span>
+            </div>
+
             {/* Mobile Search Toggle */}
             <button
               onClick={() => setShowSearchModal(!showSearchModal)}
@@ -73,11 +82,11 @@ export default function Navbar() {
               <Search className="w-5 h-5 stroke-[2]" />
             </button>
 
-            {/* Notification Bell with red badge '2' (Directly from Dribbble shot) */}
+            {/* Notification Bell with red badge '2' */}
             <div className="relative">
               <button
                 onClick={() => setHasUnread(false)}
-                title="Notifications"
+                title="GIKI Notifications"
                 className="p-2.5 rounded-full text-navy-secondary hover:text-navy hover:bg-inset transition-colors"
               >
                 <Bell className="w-5 h-5 stroke-[2]" />
@@ -89,19 +98,19 @@ export default function Navbar() {
               )}
             </div>
 
-            {/* Desktop Quick Sell Link */}
+            {/* Post Listing Link */}
             <Link
               to="/sell"
               className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-brand-light text-brand text-xs font-bold hover:bg-brand hover:text-white transition-colors"
             >
-              <span>+ Post Listing</span>
+              <span>+ Post in GIKI</span>
             </Link>
 
           </div>
 
         </div>
 
-        {/* Mobile Search Bar Dropdown */}
+        {/* Mobile Search Dropdown */}
         {showSearchModal && (
           <div className="md:hidden pb-3 pt-1 border-t border-subtle-border animate-in fade-in">
             <form onSubmit={handleSearchSubmit} className="relative flex items-center">
@@ -109,7 +118,7 @@ export default function Navbar() {
               <input
                 type="text"
                 autoFocus
-                placeholder="Search items on campus..."
+                placeholder="Search GIKI items (Calculus, Casio, Cycles)..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full bg-inset text-navy placeholder-navy-muted text-sm rounded-full pl-10 pr-9 py-2 border border-transparent focus:border-brand focus:outline-none"

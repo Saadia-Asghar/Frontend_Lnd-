@@ -7,12 +7,12 @@ import {
 import { useMarketplace } from '../context/MarketplaceContext';
 
 const PRESET_IMAGES = [
-  { label: 'Sneakers (Adidas)', url: 'https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?auto=format&fit=crop&w=700&q=80' },
-  { label: 'Hoodie / Jacket', url: 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=700&q=80' },
-  { label: 'Denim Jacket', url: 'https://images.unsplash.com/photo-1576995853123-5a10305d93c0?auto=format&fit=crop&w=700&q=80' },
-  { label: 'Textbook / Notes', url: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=700&q=80' },
-  { label: 'iPad / Tablet', url: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&w=700&q=80' },
-  { label: 'Calculator / Tech', url: 'https://images.unsplash.com/photo-1594980596870-8aa52a78d8cd?auto=format&fit=crop&w=700&q=80' }
+  { label: 'Casio Calculator', url: 'https://images.unsplash.com/photo-1594980596870-8aa52a78d8cd?auto=format&fit=crop&w=700&q=80' },
+  { label: 'GIKI Hoodie / Wear', url: 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=700&q=80' },
+  { label: 'Mountain Bike / Cycle', url: 'https://images.unsplash.com/photo-1485965120184-e220f721d03e?auto=format&fit=crop&w=700&q=80' },
+  { label: 'Engineering Textbook', url: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=700&q=80' },
+  { label: 'Arduino / Lab Kit', url: 'https://images.unsplash.com/photo-1553406830-ef2513450d76?auto=format&fit=crop&w=700&q=80' },
+  { label: 'Hostel Fridge / Cooler', url: 'https://images.unsplash.com/photo-1584992236310-6edddc08acff?auto=format&fit=crop&w=700&q=80' }
 ];
 
 export default function SellPage() {
@@ -23,9 +23,9 @@ export default function SellPage() {
   const [formData, setFormData] = useState({
     title: '',
     subtitle: '',
-    categoryId: 'clothing',
+    categoryId: 'electronics',
     price: '',
-    size: 'M',
+    size: 'Standard',
     condition: 'Used - Like New',
     campusLocation: '',
     image: '',
@@ -58,17 +58,17 @@ export default function SellPage() {
     }
 
     if (!formData.categoryId) {
-      newErrors.categoryId = 'Please select a category';
+      newErrors.categoryId = 'Please select a GIKI category';
     }
 
     if (!formData.price) {
-      newErrors.price = 'Price is required';
+      newErrors.price = 'Price is required in Rupees';
     } else if (isNaN(Number(formData.price)) || Number(formData.price) <= 0) {
-      newErrors.price = 'Enter a valid price greater than $0';
+      newErrors.price = 'Enter a valid price in PKR greater than Rs. 0';
     }
 
     if (!formData.campusLocation.trim()) {
-      newErrors.campusLocation = 'Campus pickup spot is required (e.g. Student Union, Library)';
+      newErrors.campusLocation = 'GIKI pickup spot is required (e.g. Hostel 4, TUC, Central Library)';
     }
 
     if (!formData.image.trim()) {
@@ -90,7 +90,7 @@ export default function SellPage() {
     if (!formData.sellerEmail.trim()) {
       newErrors.sellerEmail = 'Your student email is required';
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.sellerEmail)) {
-      newErrors.sellerEmail = 'Please provide a valid email address';
+      newErrors.sellerEmail = 'Please provide a valid email (e.g. u2021123@giki.edu.pk)';
     }
 
     return newErrors;
@@ -124,7 +124,7 @@ export default function SellPage() {
       description: formData.description.trim(),
       sellerName: formData.sellerName.trim(),
       sellerEmail: formData.sellerEmail.trim(),
-      sellerPhone: formData.sellerPhone.trim() || '+1 (555) 012-3456',
+      sellerPhone: formData.sellerPhone.trim() || '+92 300 1234567',
       timeAgo: 'Just now'
     };
 
@@ -147,7 +147,7 @@ export default function SellPage() {
           className="inline-flex items-center gap-2 text-xs font-bold text-navy-secondary hover:text-brand transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Back to Marketplace</span>
+          <span>Back to GIKI Marketplace</span>
         </Link>
       </div>
 
@@ -156,19 +156,19 @@ export default function SellPage() {
         <div>
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-light text-brand text-xs font-bold mb-2">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>Post an Item</span>
+            <span>GIKI Student Desk</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-bold text-navy">
-            Create Listing
+            Post an Item in GIKI
           </h1>
           <p className="text-xs sm:text-sm text-navy-secondary mt-1">
-            Publish an item for instant handover with students on your campus.
+            Sell to fellow GIKians in Pakistani Rupees (PKR) with instant campus handover.
           </p>
         </div>
 
         <div className="hidden sm:flex items-center gap-1.5 text-xs text-status-green font-bold bg-status-greenLight px-3 py-1.5 rounded-full">
           <ShieldCheck className="w-4 h-4" />
-          <span>Zero Fees</span>
+          <span>No Fees</span>
         </div>
       </div>
 
@@ -177,7 +177,7 @@ export default function SellPage() {
         <div className="p-4 rounded-2xl bg-status-greenLight border border-status-green/30 flex items-center gap-3 animate-in fade-in">
           <CheckCircle2 className="w-5 h-5 text-status-green flex-shrink-0" />
           <div>
-            <h4 className="text-sm font-bold text-status-green">Listing Published!</h4>
+            <h4 className="text-sm font-bold text-status-green">Listing Published in GIKI Mart!</h4>
             <p className="text-xs text-navy-secondary mt-0.5">Opening your live listing now...</p>
           </div>
         </div>
@@ -194,7 +194,7 @@ export default function SellPage() {
           <input
             type="text"
             name="title"
-            placeholder="e.g. Adidas Shoes for Men"
+            placeholder="e.g. Casio fx-991EX ClassWiz Calculator"
             value={formData.title}
             onChange={handleChange}
             className={`w-full px-4 py-3 rounded-2xl border text-sm text-navy bg-canvas focus:bg-white focus:outline-none transition-all ${
@@ -214,12 +214,12 @@ export default function SellPage() {
         {/* Subtitle / Model */}
         <div>
           <label className="block text-xs font-bold text-navy mb-1.5">
-            Subtitle / Model <span className="text-navy-muted font-normal">(Optional)</span>
+            Subtitle / Specs <span className="text-navy-muted font-normal">(Optional)</span>
           </label>
           <input
             type="text"
             name="subtitle"
-            placeholder="e.g. Ultraboost 20 Triple Black"
+            placeholder="e.g. GIKI Approved • Solar + Battery"
             value={formData.subtitle}
             onChange={handleChange}
             className="w-full px-4 py-3 rounded-2xl border border-subtle-border text-sm text-navy bg-canvas focus:bg-white focus:border-brand focus:outline-none transition-all"
@@ -256,7 +256,7 @@ export default function SellPage() {
               onChange={handleChange}
               className="w-full px-4 py-3 rounded-2xl border border-subtle-border text-sm text-navy bg-canvas focus:bg-white focus:border-brand focus:outline-none transition-all cursor-pointer"
             >
-              <option value="New">New (With Tags / Box)</option>
+              <option value="New">New (Unused / With Tags)</option>
               <option value="Used - Like New">Used - Like New</option>
               <option value="Used - Good">Used - Good</option>
               <option value="Used - Fair">Used - Fair</option>
@@ -264,21 +264,21 @@ export default function SellPage() {
           </div>
         </div>
 
-        {/* Price & Size */}
+        {/* Price in PKR Rupees & Size */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className="block text-xs font-bold text-navy mb-1.5">
-              Price (USD) <span className="text-status-error">*</span>
+              Price (PKR Rupees) <span className="text-status-error">*</span>
             </label>
             <div className="relative">
-              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-navy-muted font-bold text-sm">$</span>
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-navy-muted font-bold text-xs">Rs.</span>
               <input
                 type="number"
                 name="price"
-                placeholder="199"
+                placeholder="4500"
                 value={formData.price}
                 onChange={handleChange}
-                className={`w-full pl-8 pr-4 py-3 rounded-2xl border text-sm text-navy bg-canvas focus:bg-white focus:outline-none transition-all ${
+                className={`w-full pl-10 pr-4 py-3 rounded-2xl border text-sm text-navy bg-canvas focus:bg-white focus:outline-none transition-all ${
                   errors.price
                     ? 'border-status-error focus:ring-1 focus:ring-status-error'
                     : 'border-subtle-border focus:border-brand'
@@ -295,12 +295,12 @@ export default function SellPage() {
 
           <div>
             <label className="block text-xs font-bold text-navy mb-1.5">
-              Size / Dimensions <span className="text-navy-muted font-normal">(e.g. M, 10.5, Standard)</span>
+              Size / Dimensions <span className="text-navy-muted font-normal">(e.g. L, 26 Inch, Standard)</span>
             </label>
             <input
               type="text"
               name="size"
-              placeholder="e.g. M"
+              placeholder="e.g. Standard"
               value={formData.size}
               onChange={handleChange}
               className="w-full px-4 py-3 rounded-2xl border border-subtle-border text-sm text-navy bg-canvas focus:bg-white focus:border-brand focus:outline-none transition-all"
@@ -308,15 +308,15 @@ export default function SellPage() {
           </div>
         </div>
 
-        {/* Campus Meetup Location */}
+        {/* GIKI Campus Meetup Location */}
         <div>
           <label className="block text-xs font-bold text-navy mb-1.5">
-            Campus Pickup Spot <span className="text-status-error">*</span>
+            GIKI Meetup Location <span className="text-status-error">*</span>
           </label>
           <input
             type="text"
             name="campusLocation"
-            placeholder="e.g. Student Union Lobby or Library Quad"
+            placeholder="e.g. Hostel 4 Quad, TUC Cafe, Central Library"
             value={formData.campusLocation}
             onChange={handleChange}
             className={`w-full px-4 py-3 rounded-2xl border text-sm text-navy bg-canvas focus:bg-white focus:outline-none transition-all ${
@@ -341,7 +341,7 @@ export default function SellPage() {
           <textarea
             name="description"
             rows={3}
-            placeholder="Detail any wear, sizing notes, or course codes..."
+            placeholder="Describe course codes it applies to (e.g. MATH 101, EE 211), condition, or hostel details..."
             value={formData.description}
             onChange={handleChange}
             className={`w-full px-4 py-3 rounded-2xl border text-sm text-navy bg-canvas focus:bg-white focus:outline-none transition-all resize-y ${
@@ -384,7 +384,7 @@ export default function SellPage() {
 
           {/* Quick presets */}
           <div>
-            <span className="text-[11px] text-navy-muted block mb-2 font-medium">Or pick a studio photo preset:</span>
+            <span className="text-[11px] text-navy-muted block mb-2 font-medium">Or pick a GIKI item preset:</span>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
               {PRESET_IMAGES.map((preset, index) => (
                 <button
@@ -426,18 +426,18 @@ export default function SellPage() {
         {/* Seller Info */}
         <div className="space-y-4 pt-2 border-t border-subtle-border">
           <h3 className="text-xs font-bold uppercase tracking-wider text-navy-muted">
-            Your Contact Information
+            GIKI Seller Contact
           </h3>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-bold text-navy mb-1.5">
-                Your Name <span className="text-status-error">*</span>
+                Your Full Name <span className="text-status-error">*</span>
               </label>
               <input
                 type="text"
                 name="sellerName"
-                placeholder="e.g. Alex Vance"
+                placeholder="e.g. Hamza Tariq"
                 value={formData.sellerName}
                 onChange={handleChange}
                 className={`w-full px-4 py-3 rounded-2xl border text-sm text-navy bg-canvas focus:bg-white focus:outline-none transition-all ${
@@ -456,12 +456,12 @@ export default function SellPage() {
 
             <div>
               <label className="block text-xs font-bold text-navy mb-1.5">
-                Campus Email <span className="text-status-error">*</span>
+                GIKI Student Email <span className="text-status-error">*</span>
               </label>
               <input
                 type="email"
                 name="sellerEmail"
-                placeholder="e.g. student@campus.edu"
+                placeholder="e.g. u2021123@giki.edu.pk"
                 value={formData.sellerEmail}
                 onChange={handleChange}
                 className={`w-full px-4 py-3 rounded-2xl border text-sm text-navy bg-canvas focus:bg-white focus:outline-none transition-all ${
@@ -478,12 +478,26 @@ export default function SellPage() {
               )}
             </div>
           </div>
+
+          <div>
+            <label className="block text-xs font-bold text-navy mb-1.5">
+              WhatsApp / Phone Number <span className="text-navy-muted font-normal">(Optional, for fast hostel coordination)</span>
+            </label>
+            <input
+              type="tel"
+              name="sellerPhone"
+              placeholder="+92 300 1234567"
+              value={formData.sellerPhone}
+              onChange={handleChange}
+              className="w-full px-4 py-3 rounded-2xl border border-subtle-border text-sm text-navy bg-canvas focus:bg-white focus:border-brand focus:outline-none transition-all"
+            />
+          </div>
         </div>
 
         {/* Submit Button */}
         <div className="pt-4 border-t border-subtle-border flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-navy-muted">
-            All listings are free for verified students.
+            All GIKI listings are free for hostel & campus students.
           </p>
 
           <button
@@ -492,7 +506,7 @@ export default function SellPage() {
             className="w-full sm:w-auto px-8 py-3.5 bg-brand hover:bg-brand-hover text-white text-sm font-bold rounded-full shadow-glow transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2"
           >
             <PlusCircle className="w-4 h-4" />
-            <span>{isSubmitting ? 'Publishing...' : 'Publish Listing'}</span>
+            <span>{isSubmitting ? 'Publishing...' : 'Publish in GIKI'}</span>
           </button>
         </div>
 

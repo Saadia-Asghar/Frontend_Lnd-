@@ -3,7 +3,7 @@ import { X, Mail, Phone, MapPin, Send, CheckCircle2, ShieldCheck } from 'lucide-
 
 export default function SellerContactModal({ item, onClose }) {
   const [message, setMessage] = useState(
-    `Hi ${item.seller.name}, I am interested in your listing "${item.title}". Is it still available to meet near ${item.campusLocation}?`
+    `Assalam-o-Alaikum ${item.seller.name.split(' ')[0]}, I am interested in your listing "${item.title}". Can we meet near ${item.campusLocation} for handover?`
   );
   const [buyerEmail, setBuyerEmail] = useState('');
   const [sent, setSent] = useState(false);
@@ -12,7 +12,7 @@ export default function SellerContactModal({ item, onClose }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!buyerEmail.trim() || !buyerEmail.includes('@')) {
-      setError('Please provide a valid campus email address');
+      setError('Please provide a valid GIKI student email (e.g. u2021123@giki.edu.pk)');
       return;
     }
     setError('');
@@ -26,8 +26,8 @@ export default function SellerContactModal({ item, onClose }) {
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-subtle-border bg-canvas/50">
           <div>
-            <h3 className="text-lg font-bold text-navy">Contact Seller</h3>
-            <p className="text-xs text-navy-secondary mt-0.5">Direct peer-to-peer campus communication</p>
+            <h3 className="text-lg font-bold text-navy">Contact GIKian Seller</h3>
+            <p className="text-xs text-navy-secondary mt-0.5">Hostel & campus direct communication</p>
           </div>
           <button
             onClick={onClose}
@@ -49,9 +49,9 @@ export default function SellerContactModal({ item, onClose }) {
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-1.5">
                 <span className="font-bold text-navy text-sm truncate">{item.seller.name}</span>
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-brand-light text-brand text-[10px] font-semibold">
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-brand-light text-brand text-[10px] font-bold">
                   <ShieldCheck className="w-3 h-3" />
-                  Verified
+                  GIKian
                 </span>
               </div>
               <p className="text-xs text-navy-secondary truncate mt-0.5">{item.seller.campusRole}</p>
@@ -68,13 +68,13 @@ export default function SellerContactModal({ item, onClose }) {
               <div className="w-14 h-14 rounded-full bg-status-greenLight text-status-green flex items-center justify-center mx-auto mb-4">
                 <CheckCircle2 className="w-8 h-8" />
               </div>
-              <h4 className="text-lg font-bold text-navy">Message Dispatched!</h4>
+              <h4 className="text-lg font-bold text-navy">Inquiry Dispatched!</h4>
               <p className="text-sm text-navy-secondary mt-2 max-w-sm mx-auto">
-                We sent your inquiry directly to <strong>{item.seller.name}</strong> at their campus email. Responses will appear in your student inbox.
+                We sent your message to <strong>{item.seller.name}</strong> at their GIKI email address. Check your student inbox for their response.
               </p>
               <button
                 onClick={onClose}
-                className="mt-6 w-full py-3 bg-brand hover:bg-brand-hover text-white text-sm font-semibold rounded-xl shadow-glow transition-all"
+                className="mt-6 w-full py-3 bg-brand hover:bg-brand-hover text-white text-sm font-bold rounded-full shadow-glow transition-all"
               >
                 Done
               </button>
@@ -82,18 +82,18 @@ export default function SellerContactModal({ item, onClose }) {
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-xs font-semibold text-navy mb-1.5">
-                  Your Campus Email <span className="text-status-error">*</span>
+                <label className="block text-xs font-bold text-navy mb-1.5">
+                  Your GIKI Student Email <span className="text-status-error">*</span>
                 </label>
                 <input
                   type="email"
-                  placeholder="e.g. student@university.edu"
+                  placeholder="e.g. rollno@giki.edu.pk"
                   value={buyerEmail}
                   onChange={(e) => {
                     setBuyerEmail(e.target.value);
                     if (error) setError('');
                   }}
-                  className={`w-full px-4 py-2.5 rounded-xl border text-sm text-navy bg-canvas focus:bg-white focus:outline-none transition-all ${
+                  className={`w-full px-4 py-2.5 rounded-2xl border text-sm text-navy bg-canvas focus:bg-white focus:outline-none transition-all ${
                     error ? 'border-status-error focus:ring-1 focus:ring-status-error' : 'border-subtle-border focus:border-brand'
                   }`}
                 />
@@ -101,21 +101,21 @@ export default function SellerContactModal({ item, onClose }) {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-navy mb-1.5">
+                <label className="block text-xs font-bold text-navy mb-1.5">
                   Inquiry Message
                 </label>
                 <textarea
                   rows={3}
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-subtle-border text-sm text-navy bg-canvas focus:bg-white focus:border-brand focus:outline-none transition-all resize-none"
+                  className="w-full px-4 py-2.5 rounded-2xl border border-subtle-border text-sm text-navy bg-canvas focus:bg-white focus:border-brand focus:outline-none transition-all resize-none"
                 />
               </div>
 
-              <div className="p-3 rounded-xl bg-canvas border border-subtle-border text-xs text-navy-secondary flex items-start gap-2">
+              <div className="p-3 rounded-2xl bg-canvas border border-subtle-border text-xs text-navy-secondary flex items-start gap-2">
                 <MapPin className="w-4 h-4 text-brand flex-shrink-0 mt-0.5" />
                 <span>
-                  Suggested meetup location: <strong>{item.campusLocation}</strong>. Always arrange handoffs in daylight at high-traffic campus zones.
+                  Suggested meetup location: <strong>{item.campusLocation}</strong>. Always arrange handovers in public areas during daytime.
                 </span>
               </div>
 
@@ -123,25 +123,25 @@ export default function SellerContactModal({ item, onClose }) {
                 <button
                   type="button"
                   onClick={onClose}
-                  className="flex-1 py-3 px-4 rounded-xl border border-subtle-border text-sm font-semibold text-navy hover:bg-inset transition-colors"
+                  className="flex-1 py-3 px-4 rounded-full border border-subtle-border text-sm font-semibold text-navy hover:bg-inset transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 py-3 px-4 rounded-xl bg-brand hover:bg-brand-hover text-white text-sm font-semibold shadow-glow transition-all flex items-center justify-center gap-2"
+                  className="flex-1 py-3 px-4 rounded-full bg-brand hover:bg-brand-hover text-white text-sm font-bold shadow-glow transition-all flex items-center justify-center gap-2"
                 >
                   <Send className="w-4 h-4" />
-                  <span>Send Inquiry</span>
+                  <span>Send Message</span>
                 </button>
               </div>
 
               {/* Direct Channels */}
               <div className="pt-3 border-t border-subtle-border text-center">
-                <span className="text-[11px] text-navy-muted">Prefer direct campus contact?</span>
+                <span className="text-[11px] text-navy-muted">Direct GIKI contact:</span>
                 <div className="flex items-center justify-center gap-4 mt-2">
                   <a
-                    href={`mailto:${item.seller.email}?subject=Interested in ${encodeURIComponent(item.title)} on CampusMart`}
+                    href={`mailto:${item.seller.email}?subject=Interested in ${encodeURIComponent(item.title)} on GIKI Mart`}
                     className="inline-flex items-center gap-1.5 text-xs font-semibold text-brand hover:underline"
                   >
                     <Mail className="w-3.5 h-3.5" />

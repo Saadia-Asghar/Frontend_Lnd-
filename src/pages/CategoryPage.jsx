@@ -17,31 +17,26 @@ export default function CategoryPage() {
   const { id } = useParams();
   const { items, categories } = useMarketplace();
 
-  // Find active category
   const currentCategory = categories.find((c) => c.id === id);
 
   // Filters
-  const [selectedCondition, setSelectedCondition] = useState('all'); // 'all', 'new', 'used'
+  const [selectedCondition, setSelectedCondition] = useState('all');
   const [sortBy, setSortBy] = useState('default');
-  const [maxPrice, setMaxPrice] = useState(400);
+  const [maxPrice, setMaxPrice] = useState(80000);
 
   const IconComponent = currentCategory ? iconMap[currentCategory.icon] || Grid : Grid;
 
-  // Filter items belonging to this category
   const categoryItems = useMemo(() => {
     return items.filter((item) => {
-      // Must match category
       if (item.categoryId !== id) return false;
 
-      // Condition filter
       if (selectedCondition === 'new') {
         if (!item.isNew && item.condition !== 'New') return false;
       } else if (selectedCondition === 'used') {
         if (item.isNew || item.condition === 'New') return false;
       }
 
-      // Price filter
-      if (item.price > maxPrice) return false;
+      if (Number(item.price) > maxPrice) return false;
 
       return true;
     }).sort((a, b) => {
@@ -59,14 +54,14 @@ export default function CategoryPage() {
         </div>
         <h2 className="text-xl font-bold text-navy">Category Not Found</h2>
         <p className="text-sm text-navy-secondary mt-1">
-          The category you are looking for does not exist.
+          The category you are looking for does not exist in GIKI Mart.
         </p>
         <Link
           to="/"
           className="mt-4 inline-flex items-center gap-2 px-5 py-2.5 bg-brand text-white text-sm font-semibold rounded-full"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Return to Marketplace</span>
+          <span>Return to GIKI Marketplace</span>
         </Link>
       </div>
     );
@@ -79,7 +74,7 @@ export default function CategoryPage() {
       <div className="flex items-center gap-2 text-xs text-navy-muted">
         <Link to="/" className="hover:text-brand transition-colors">Home</Link>
         <span>/</span>
-        <span className="text-navy-secondary">Categories</span>
+        <span className="text-navy-secondary">GIKI Categories</span>
         <span>/</span>
         <span className="font-semibold text-brand">{currentCategory.name}</span>
       </div>
@@ -101,7 +96,7 @@ export default function CategoryPage() {
               </span>
             </div>
             <p className="text-xs sm:text-sm text-navy-secondary mt-1 max-w-xl">
-              {currentCategory.description}. Verified campus listings for direct handoff.
+              {currentCategory.description}. Verified GIKI student listings for direct campus handoff.
             </p>
           </div>
         </div>
@@ -137,7 +132,7 @@ export default function CategoryPage() {
       {/* Filter and Sort Toolbar */}
       <div className="p-4 rounded-2xl bg-surface border border-subtle-border flex flex-wrap items-center justify-between gap-4">
         
-        {/* Left: Condition Filter */}
+        {/* Condition Filter */}
         <div className="flex items-center gap-2">
           <span className="text-xs font-semibold text-navy-muted">Condition:</span>
           <div className="inline-flex p-1 bg-canvas rounded-full border border-subtle-border">
@@ -177,17 +172,17 @@ export default function CategoryPage() {
           </div>
         </div>
 
-        {/* Right: Price slider and Sort */}
+        {/* Price Slider in PKR */}
         <div className="flex flex-wrap items-center gap-3">
           <div className="flex items-center gap-2 bg-canvas px-3 py-1.5 rounded-full border border-subtle-border text-xs">
             <SlidersHorizontal className="w-3.5 h-3.5 text-navy-muted" />
             <span className="text-navy-secondary font-medium">Under:</span>
-            <span className="font-bold text-navy">${maxPrice}</span>
+            <span className="font-bold text-navy">Rs. {maxPrice.toLocaleString()}</span>
             <input
               type="range"
-              min="10"
-              max="400"
-              step="10"
+              min="1000"
+              max="90000"
+              step="1000"
               value={maxPrice}
               onChange={(e) => setMaxPrice(Number(e.target.value))}
               className="w-20 accent-brand cursor-pointer"
@@ -219,7 +214,7 @@ export default function CategoryPage() {
           <div className="w-12 h-12 rounded-full bg-inset text-navy-muted flex items-center justify-center mx-auto mb-3">
             <SlidersHorizontal className="w-5 h-5" />
           </div>
-          <h3 className="text-base font-bold text-navy">No listings match these filters</h3>
+          <h3 className="text-base font-bold text-navy">No GIKI listings match these filters</h3>
           <p className="text-xs text-navy-secondary mt-1 max-w-sm mx-auto">
             Try adjusting your maximum price cap or switching condition.
           </p>
@@ -227,7 +222,7 @@ export default function CategoryPage() {
             <button
               onClick={() => {
                 setSelectedCondition('all');
-                setMaxPrice(400);
+                setMaxPrice(80000);
               }}
               className="inline-flex items-center gap-1.5 px-4 py-2 bg-brand-light text-brand text-xs font-bold rounded-full hover:bg-brand hover:text-white transition-colors"
             >
@@ -238,7 +233,7 @@ export default function CategoryPage() {
               to="/sell"
               className="px-4 py-2 bg-brand text-white text-xs font-bold rounded-full hover:bg-brand-hover transition-colors"
             >
-              Post First Item
+              Post First Item in this Category
             </Link>
           </div>
         </div>

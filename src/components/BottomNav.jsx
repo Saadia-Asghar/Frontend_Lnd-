@@ -11,26 +11,24 @@ export default function BottomNav() {
 
   return (
     <>
-      {/* Floating "+ Sell Items" Button (Exact copy from Dribbble shot) */}
+      {/* Floating "+ Sell in GIKI" Button (Dribbble aesthetic) */}
       {!isSell && (
         <div className="fixed bottom-20 sm:bottom-8 left-1/2 -translate-x-1/2 z-40">
           <Link
             to="/sell"
             className="flex items-center gap-2.5 px-5 py-2.5 bg-surface rounded-full shadow-floatPill border border-subtle-border/80 hover:scale-105 active:scale-95 transition-all duration-200 group"
           >
-            {/* Blue plus circle */}
             <div className="w-6 h-6 rounded-full bg-brand text-white flex items-center justify-center font-bold text-sm shadow-xs group-hover:bg-brand-hover">
               <Plus className="w-3.5 h-3.5 stroke-[3]" />
             </div>
-            {/* Label */}
             <span className="text-sm font-bold text-navy tracking-tight">
-              Sell Items
+              Sell in GIKI
             </span>
           </Link>
         </div>
       )}
 
-      {/* Bottom Navigation Bar (Visible on mobile/compact screens) */}
+      {/* Bottom Navigation Bar */}
       <nav className="sm:hidden fixed bottom-0 left-0 right-0 z-30 bg-surface/95 backdrop-blur-md border-t border-subtle-border px-6 py-2.5">
         <div className="flex items-center justify-between max-w-sm mx-auto">
           
@@ -45,8 +43,8 @@ export default function BottomNav() {
           </Link>
 
           <Link
-            to="/category/clothing"
-            title="Explore"
+            to="/category/books"
+            title="GIKI Categories"
             className={`p-2 transition-colors ${
               isCategory ? 'text-brand font-bold' : 'text-navy-muted hover:text-navy'
             }`}
@@ -59,8 +57,8 @@ export default function BottomNav() {
 
           <button
             type="button"
-            title="Messages"
-            onClick={() => alert("Campus message notifications are linked to your campus email.")}
+            title="GIKI Inquiries"
+            onClick={() => alert("GIKI message notifications are sent directly to your student email address.")}
             className="p-2 text-navy-muted hover:text-navy transition-colors"
           >
             <MessageSquare className="w-5 h-5 stroke-[1.8]" />

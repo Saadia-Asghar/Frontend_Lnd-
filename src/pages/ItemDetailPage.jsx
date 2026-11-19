@@ -21,16 +21,16 @@ export default function ItemDetailPage() {
   if (!item) {
     return (
       <div className="py-20 text-center">
-        <h2 className="text-2xl font-bold text-navy">Item Not Found</h2>
+        <h2 className="text-2xl font-bold text-navy">GIKI Listing Not Found</h2>
         <p className="text-sm text-navy-secondary mt-2">
-          This listing may have been sold or removed by the student seller.
+          This item may have been sold or removed by the student seller.
         </p>
         <Link
           to="/"
           className="mt-6 inline-flex items-center gap-2 px-5 py-2.5 bg-brand text-white text-sm font-semibold rounded-full"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Browse Active Listings</span>
+          <span>Browse Active GIKI Listings</span>
         </Link>
       </div>
     );
@@ -85,7 +85,7 @@ export default function ItemDetailPage() {
       {/* Main Showcase Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         
-        {/* Left Column: Product Photo matching Dribbble soft grey rounded container */}
+        {/* Left Column: Product Photo in Dribbble tinted container */}
         <div className="lg:col-span-7 space-y-4">
           <div className="relative rounded-3xl sm:rounded-4xl overflow-hidden bg-[#EEF2F7] border border-subtle-border/80 p-6 sm:p-10 flex items-center justify-center aspect-[4/3] w-full">
             <img
@@ -100,13 +100,13 @@ export default function ItemDetailPage() {
             )}
           </div>
 
-          {/* Campus Location Meetup Strip */}
+          {/* GIKI Campus Handover Location */}
           <div className="p-4 rounded-2xl bg-surface border border-subtle-border flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-brand-light text-brand flex items-center justify-center flex-shrink-0">
               <MapPin className="w-5 h-5 stroke-[2]" />
             </div>
             <div className="min-w-0 flex-1">
-              <span className="text-xs text-navy-muted block">Campus Handover Location</span>
+              <span className="text-xs text-navy-muted block">GIKI Meetup Spot</span>
               <span className="text-sm font-bold text-navy truncate block">{item.campusLocation}</span>
             </div>
           </div>
@@ -131,7 +131,7 @@ export default function ItemDetailPage() {
               </span>
             </div>
 
-            {/* Title, Subtitle, Size & Price */}
+            {/* Title, Subtitle, Size & Price in PKR Rupees */}
             <div>
               <div className="flex items-start justify-between gap-2">
                 <h1 className="text-2xl sm:text-3xl font-bold text-navy leading-snug">
@@ -150,16 +150,16 @@ export default function ItemDetailPage() {
 
               <div className="mt-4 flex items-baseline gap-2">
                 <span className="text-3xl sm:text-4xl font-bold text-navy">
-                  ${item.price}
+                  Rs. {Number(item.price).toLocaleString()}
                 </span>
-                <span className="text-xs text-navy-muted font-medium">student direct price</span>
+                <span className="text-xs text-navy-muted font-medium">PKR student price</span>
               </div>
             </div>
 
             {/* Description */}
             <div className="pt-4 border-t border-subtle-border">
               <h3 className="text-xs font-bold uppercase tracking-wider text-navy-muted mb-2">
-                Description
+                Listing Details
               </h3>
               <p className="text-sm text-navy-secondary leading-relaxed whitespace-pre-line">
                 {item.description}
@@ -173,16 +173,16 @@ export default function ItemDetailPage() {
                 className="w-full py-4 px-6 bg-brand hover:bg-brand-hover text-white text-base font-bold rounded-full shadow-glow transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2"
               >
                 <MessageCircle className="w-5 h-5" />
-                <span>Contact Seller</span>
+                <span>Contact {item.seller.name.split(' ')[0]}</span>
               </button>
               <p className="text-[11px] text-navy-muted text-center mt-2.5">
-                No upfront online charges. Verify in person on campus.
+                Inspect in person at GIKI. Pay cash or Raast / Nayapay on handover.
               </p>
             </div>
 
           </div>
 
-          {/* Seller Card */}
+          {/* GIKI Seller Card */}
           <div className="p-6 rounded-3xl bg-surface border border-subtle-border shadow-card space-y-4">
             <h3 className="text-xs font-bold uppercase tracking-wider text-navy-muted">
               Student Seller
@@ -199,7 +199,7 @@ export default function ItemDetailPage() {
                   <span className="font-bold text-navy text-sm truncate">{item.seller.name}</span>
                   <span className="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full bg-brand-light text-brand text-[10px] font-bold">
                     <ShieldCheck className="w-3 h-3" />
-                    Verified
+                    GIKian
                   </span>
                 </div>
                 <p className="text-xs text-navy-secondary truncate mt-0.5">{item.seller.campusRole}</p>
@@ -208,21 +208,21 @@ export default function ItemDetailPage() {
 
             <div className="grid grid-cols-2 gap-3 pt-2 text-xs">
               <div className="p-2.5 rounded-2xl bg-canvas border border-subtle-border text-center">
-                <span className="text-navy-muted block text-[11px]">Rating</span>
+                <span className="text-navy-muted block text-[11px]">Seller Rating</span>
                 <span className="font-bold text-navy text-sm">{item.seller.rating} ★</span>
               </div>
               <div className="p-2.5 rounded-2xl bg-canvas border border-subtle-border text-center">
-                <span className="text-navy-muted block text-[11px]">Replies</span>
+                <span className="text-navy-muted block text-[11px]">Avg Response</span>
                 <span className="font-bold text-brand text-sm">{item.seller.responseTime}</span>
               </div>
             </div>
           </div>
 
-          {/* Safety Reminder */}
+          {/* GIKI Safety Reminder */}
           <div className="p-4 rounded-2xl bg-status-amberLight/40 border border-status-amber/20 flex items-start gap-2.5 text-xs text-navy-secondary">
             <AlertTriangle className="w-4 h-4 text-status-amber flex-shrink-0 mt-0.5" />
             <span>
-              Always meet in busy campus spaces like the Student Union or Library.
+              Always meet at common campus spots like TUC Cafe, Central Library, or outside the hostel gate.
             </span>
           </div>
 
