@@ -1,105 +1,90 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { MapPin, Heart, Clock } from 'lucide-react';
+import { Heart } from 'lucide-react';
 import { useMarketplace } from '../context/MarketplaceContext';
 
 export default function ItemCard({ item }) {
   const { toggleSaveItem, isItemSaved } = useMarketplace();
-  const saved = isItemSaved(item.id);
-
-  const getConditionStyle = (condition) => {
-    if (condition === 'New' || condition === 'Used - Like New') {
-      return 'bg-status-greenLight text-status-green border-status-green/20';
-    }
-    return 'bg-inset text-navy-secondary border-subtle-border';
-  };
+  const saved = isItemSaved(item.id) || item.isLiked;
 
   return (
-    <div className="group relative bg-surface rounded-2xl border border-subtle-border shadow-card hover:shadow-cardHover transition-all duration-200 hover:-translate-y-1 flex flex-col overflow-hidden">
+    <div className="group relative flex flex-col transition-all duration-200">
       
-      {/* Image Thumbnail & Overlay Badges */}
-      <div className="relative aspect-[4/3] w-full bg-inset overflow-hidden">
+      {/* 1. Upper Product Image Box (Matching Dribbble soft grey rounded container) */}
+      <div className="relative aspect-square sm:aspect-[4/3] w-full bg-[#EEF2F7] rounded-2xl sm:rounded-3xl overflow-hidden p-3 sm:p-4 flex items-center justify-center transition-transform duration-200 group-hover:scale-[1.02]">
+        
+        {/* Product Image */}
         <img
           src={item.image}
           alt={item.title}
           loading="lazy"
-          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+          className="w-full h-full object-cover rounded-xl sm:rounded-2xl mix-blend-multiply group-hover:scale-105 transition-transform duration-300"
         />
 
-        {/* Condition Tag */}
-        <div className="absolute top-3 left-3 flex flex-wrap gap-1.5 pointer-events-none">
-          <span
-            className={`px-2.5 py-1 text-[11px] font-semibold rounded-full border shadow-sm ${getConditionStyle(
-              item.condition
-            )}`}
-          >
-            {item.condition}
+        {/* Condition pill or New badge on image */}
+        {item.isNew && (
+          <span className="absolute top-3 left-3 px-2 py-0.5 rounded-full bg-surface text-brand text-[10px] font-bold shadow-xs">
+            NEW
           </span>
-        </div>
+        )}
 
-        {/* Favorite Button */}
-        <button
-          type="button"
-          onClick={(e) => toggleSaveItem(item.id, e)}
-          title={saved ? 'Remove from saved' : 'Save item'}
-          className={`absolute top-3 right-3 p-2 rounded-full backdrop-blur-sm transition-all duration-200 ${
-            saved
-              ? 'bg-brand text-white shadow-sm'
-              : 'bg-white/90 text-navy-secondary hover:text-brand hover:bg-white shadow-sm'
-          }`}
-        >
-          <Heart className={`w-4 h-4 ${saved ? 'fill-current' : ''}`} />
-        </button>
-
-        {/* Category Pill on bottom of image */}
-        <div className="absolute bottom-2.5 left-3">
-          <span className="px-2 py-0.5 rounded-md bg-navy/80 text-white text-[11px] font-medium backdrop-blur-xs">
-            {item.categoryName}
-          </span>
-        </div>
       </div>
 
-      {/* Card Content Block */}
-      <div className="p-4 flex flex-col flex-1 justify-between">
-        <div>
-          {/* Item Title */}
-          <Link to={`/item/${item.id}`} className="block group-hover:text-brand transition-colors">
-            <h3 className="text-[15px] font-semibold text-navy leading-snug line-clamp-2 min-h-[42px]">
-              {item.title}
-            </h3>
+      {/* 2. Content Details below image */}
+      <div className="pt-3 px-1 flex flex-col gap-1">
+        
+        {/* Time Ago (e.g. '4 hours ago' from Dribbble shot) */}
+        <span className="text-[11px] font-medium text-navy-muted leading-none">
+          {item.timeAgo || item.createdAt}
+        </span>
+
+        {/* Title & Size row */}
+        <div className="flex items-start justify-between gap-2 mt-0.5">
+          <Link
+            to={`/item/${item.id}`}
+            className="text-sm font-semibold text-navy leading-snug line-clamp-1 group-hover:text-brand transition-colors"
+          >
+            {item.title}
           </Link>
 
-          {/* Campus Location */}
-          <div className="flex items-center gap-1 mt-2 text-xs text-navy-muted">
-            <MapPin className="w-3.5 h-3.5 flex-shrink-0 text-navy-muted" />
-            <span className="truncate">{item.campusLocation}</span>
-          </div>
+          {item.size && (
+            <span className="text-xs font-semibold text-navy-muted flex-shrink-0">
+              {item.size}
+            </span>
+          )}
         </div>
 
-        {/* Price & Action Footer */}
-        <div className="mt-4 pt-3 border-t border-subtle-border/60 flex items-center justify-between">
-          <div>
-            <span className="text-xs text-navy-muted block font-medium">Price</span>
-            <span className="text-lg font-bold text-brand leading-none">
-              ${item.price}
-            </span>
-          </div>
+        {/* Price & Heart Row */}
+        <div className="flex items-center justify-between pt-0.5">
+          <span className="text-base sm:text-lg font-bold text-navy">
+            ${item.price}
+          </span>
 
-          <div className="flex items-center gap-1 text-[11px] text-navy-muted font-medium">
-            <Clock className="w-3 h-3 text-navy-muted" />
-            <span>{item.createdAt}</span>
-          </div>
+          <button
+            type="button"
+            onClick={(e) => toggleSaveItem(item.id, e)}
+            title={saved ? 'Favorited' : 'Add to favorites'}
+            className="p-1 rounded-full text-navy-muted hover:text-coral transition-colors"
+          >
+            <Heart
+              className={`w-4 h-4 sm:w-4.5 sm:h-4.5 transition-colors ${
+                saved
+                  ? 'fill-coral text-coral'
+                  : 'text-navy-muted hover:text-coral'
+              }`}
+            />
+          </button>
         </div>
 
       </div>
 
-      {/* Clickable Card Area */}
+      {/* Clickable Card Link covering the container */}
       <Link
         to={`/item/${item.id}`}
         aria-label={`View ${item.title}`}
         className="absolute inset-0 z-0"
       />
-      {/* Make sure interactive overlay buttons sit above */}
+      {/* Interactive buttons sit on z-10 */}
       <div className="pointer-events-none relative z-10" />
     </div>
   );

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { 
   ArrowLeft, MapPin, Clock, ShieldCheck, Heart, 
-  MessageCircle, Share2, AlertTriangle, CheckCircle2 
+  MessageCircle, Share2, AlertTriangle 
 } from 'lucide-react';
 import { useMarketplace } from '../context/MarketplaceContext';
 import ItemCard from '../components/ItemCard';
@@ -16,7 +16,7 @@ export default function ItemDetailPage() {
   const [copied, setCopied] = useState(false);
 
   const item = items.find((i) => i.id === id);
-  const saved = item ? isItemSaved(item.id) : false;
+  const saved = item ? isItemSaved(item.id) || item.isLiked : false;
 
   if (!item) {
     return (
@@ -27,7 +27,7 @@ export default function ItemDetailPage() {
         </p>
         <Link
           to="/"
-          className="mt-6 inline-flex items-center gap-2 px-5 py-2.5 bg-brand text-white text-sm font-semibold rounded-xl"
+          className="mt-6 inline-flex items-center gap-2 px-5 py-2.5 bg-brand text-white text-sm font-semibold rounded-full"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Browse Active Listings</span>
@@ -36,7 +36,7 @@ export default function ItemDetailPage() {
     );
   }
 
-  // Related items in the same category (excluding current item)
+  // Related items in the same category
   const relatedItems = items
     .filter((i) => i.categoryId === item.categoryId && i.id !== item.id)
     .slice(0, 4);
@@ -47,83 +47,67 @@ export default function ItemDetailPage() {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const getConditionStyle = (condition) => {
-    if (condition === 'New' || condition === 'Used - Like New') {
-      return 'bg-status-greenLight text-status-green border-status-green/20';
-    }
-    return 'bg-inset text-navy-secondary border-subtle-border';
-  };
-
   return (
-    <div className="space-y-10">
+    <div className="space-y-8 pb-16">
       
-      {/* Back and Breadcrumbs */}
+      {/* Top Bar with Back, Share, and Heart */}
       <div className="flex items-center justify-between">
         <button
           onClick={() => navigate(-1)}
-          className="inline-flex items-center gap-2 text-xs font-semibold text-navy-secondary hover:text-brand transition-colors"
+          className="inline-flex items-center gap-2 text-xs font-bold text-navy-secondary hover:text-brand transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Back to listings</span>
+          <span>Back</span>
         </button>
 
         <div className="flex items-center gap-2">
           <button
             onClick={handleShare}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-subtle-border bg-surface text-xs font-medium text-navy hover:bg-inset transition-colors"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-subtle-border bg-surface text-xs font-semibold text-navy hover:bg-inset transition-colors"
           >
             <Share2 className="w-3.5 h-3.5 text-navy-muted" />
-            <span>{copied ? 'Link Copied!' : 'Share'}</span>
+            <span>{copied ? 'Copied!' : 'Share'}</span>
           </button>
 
           <button
             onClick={(e) => toggleSaveItem(item.id, e)}
-            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-semibold transition-colors ${
+            className={`p-2 rounded-full border transition-colors ${
               saved
-                ? 'bg-brand text-white border-brand'
-                : 'bg-surface text-navy border-subtle-border hover:bg-inset'
+                ? 'bg-coral text-white border-coral'
+                : 'bg-surface text-navy-muted border-subtle-border hover:text-coral'
             }`}
           >
-            <Heart className={`w-3.5 h-3.5 ${saved ? 'fill-current' : ''}`} />
-            <span>{saved ? 'Saved' : 'Save'}</span>
+            <Heart className={`w-4 h-4 ${saved ? 'fill-current' : ''}`} />
           </button>
         </div>
       </div>
 
-      {/* Main Item Grid */}
+      {/* Main Showcase Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         
-        {/* Left Column: Media Presentation */}
+        {/* Left Column: Product Photo matching Dribbble soft grey rounded container */}
         <div className="lg:col-span-7 space-y-4">
-          <div className="relative rounded-3xl overflow-hidden bg-inset border border-subtle-border shadow-card aspect-[4/3] w-full">
+          <div className="relative rounded-3xl sm:rounded-4xl overflow-hidden bg-[#EEF2F7] border border-subtle-border/80 p-6 sm:p-10 flex items-center justify-center aspect-[4/3] w-full">
             <img
               src={item.image}
               alt={item.title}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain mix-blend-multiply"
             />
-            {/* Condition overlay */}
-            <div className="absolute top-4 left-4">
-              <span
-                className={`px-3 py-1 text-xs font-semibold rounded-full border shadow-sm ${getConditionStyle(
-                  item.condition
-                )}`}
-              >
-                {item.condition}
+            {item.isNew && (
+              <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-surface text-brand text-xs font-bold shadow-xs">
+                NEW
               </span>
-            </div>
+            )}
           </div>
 
-          {/* Safe Campus Pickup Box */}
-          <div className="p-4 rounded-2xl bg-surface border border-subtle-border flex items-start gap-3">
-            <div className="w-9 h-9 rounded-xl bg-brand-light text-brand flex items-center justify-center flex-shrink-0 mt-0.5">
-              <MapPin className="w-5 h-5" />
+          {/* Campus Location Meetup Strip */}
+          <div className="p-4 rounded-2xl bg-surface border border-subtle-border flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-brand-light text-brand flex items-center justify-center flex-shrink-0">
+              <MapPin className="w-5 h-5 stroke-[2]" />
             </div>
-            <div>
-              <h4 className="text-sm font-bold text-navy">Campus Handover Location</h4>
-              <p className="text-xs text-navy-secondary mt-0.5">
-                The seller suggests meeting at <strong>{item.campusLocation}</strong>.
-                Always inspect the item thoroughly before concluding the exchange.
-              </p>
+            <div className="min-w-0 flex-1">
+              <span className="text-xs text-navy-muted block">Campus Handover Location</span>
+              <span className="text-sm font-bold text-navy truncate block">{item.campusLocation}</span>
             </div>
           </div>
         </div>
@@ -131,66 +115,77 @@ export default function ItemDetailPage() {
         {/* Right Column: Listing Details & Seller Actions */}
         <div className="lg:col-span-5 space-y-6">
           
-          {/* Main Card */}
           <div className="p-6 sm:p-8 rounded-3xl bg-surface border border-subtle-border shadow-card space-y-6">
             
-            {/* Category tag & Post age */}
+            {/* Category Pill & Time */}
             <div className="flex items-center justify-between text-xs">
               <Link
                 to={`/category/${item.categoryId}`}
-                className="px-2.5 py-1 rounded-full bg-brand-light text-brand font-semibold hover:bg-brand hover:text-white transition-colors"
+                className="px-3 py-1 rounded-full bg-brand-light text-brand font-bold hover:bg-brand hover:text-white transition-colors"
               >
                 {item.categoryName}
               </Link>
-              <span className="flex items-center gap-1 text-navy-muted">
+              <span className="flex items-center gap-1 text-navy-muted font-medium">
                 <Clock className="w-3.5 h-3.5" />
-                <span>Posted {item.createdAt}</span>
+                <span>{item.timeAgo || item.createdAt}</span>
               </span>
             </div>
 
-            {/* Title & Price */}
+            {/* Title, Subtitle, Size & Price */}
             <div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-navy leading-snug">
-                {item.title}
-              </h1>
-              <div className="mt-3 flex items-baseline gap-2">
-                <span className="text-3xl font-bold text-brand">
+              <div className="flex items-start justify-between gap-2">
+                <h1 className="text-2xl sm:text-3xl font-bold text-navy leading-snug">
+                  {item.title}
+                </h1>
+                {item.size && (
+                  <span className="px-2.5 py-1 rounded-full bg-inset text-navy-secondary text-xs font-bold flex-shrink-0">
+                    {item.size}
+                  </span>
+                )}
+              </div>
+
+              {item.subtitle && (
+                <p className="text-sm text-navy-secondary mt-1">{item.subtitle}</p>
+              )}
+
+              <div className="mt-4 flex items-baseline gap-2">
+                <span className="text-3xl sm:text-4xl font-bold text-navy">
                   ${item.price}
                 </span>
-                <span className="text-xs text-navy-muted">student price</span>
+                <span className="text-xs text-navy-muted font-medium">student direct price</span>
               </div>
             </div>
 
             {/* Description */}
             <div className="pt-4 border-t border-subtle-border">
               <h3 className="text-xs font-bold uppercase tracking-wider text-navy-muted mb-2">
-                Item Description
+                Description
               </h3>
               <p className="text-sm text-navy-secondary leading-relaxed whitespace-pre-line">
                 {item.description}
               </p>
             </div>
 
-            {/* Primary Action Button */}
+            {/* Contact Seller CTA Button */}
             <div className="pt-2">
               <button
                 onClick={() => setShowContactModal(true)}
-                className="w-full py-4 px-6 bg-brand hover:bg-brand-hover text-white text-base font-semibold rounded-xl shadow-glow transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2"
+                className="w-full py-4 px-6 bg-brand hover:bg-brand-hover text-white text-base font-bold rounded-full shadow-glow transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2"
               >
                 <MessageCircle className="w-5 h-5" />
                 <span>Contact Seller</span>
               </button>
               <p className="text-[11px] text-navy-muted text-center mt-2.5">
-                No upfront payment required. Inspect and hand over in person.
+                No upfront online charges. Verify in person on campus.
               </p>
             </div>
 
           </div>
 
-          {/* Seller Profile Card */}
+          {/* Seller Card */}
           <div className="p-6 rounded-3xl bg-surface border border-subtle-border shadow-card space-y-4">
             <h3 className="text-xs font-bold uppercase tracking-wider text-navy-muted">
-              About the Student Seller
+              Student Seller
             </h3>
             
             <div className="flex items-center gap-3.5">
@@ -202,7 +197,7 @@ export default function ItemDetailPage() {
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-1.5">
                   <span className="font-bold text-navy text-sm truncate">{item.seller.name}</span>
-                  <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full bg-brand-light text-brand text-[10px] font-semibold">
+                  <span className="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full bg-brand-light text-brand text-[10px] font-bold">
                     <ShieldCheck className="w-3 h-3" />
                     Verified
                   </span>
@@ -212,11 +207,11 @@ export default function ItemDetailPage() {
             </div>
 
             <div className="grid grid-cols-2 gap-3 pt-2 text-xs">
-              <div className="p-2.5 rounded-xl bg-canvas border border-subtle-border text-center">
+              <div className="p-2.5 rounded-2xl bg-canvas border border-subtle-border text-center">
                 <span className="text-navy-muted block text-[11px]">Rating</span>
                 <span className="font-bold text-navy text-sm">{item.seller.rating} ★</span>
               </div>
-              <div className="p-2.5 rounded-xl bg-canvas border border-subtle-border text-center">
+              <div className="p-2.5 rounded-2xl bg-canvas border border-subtle-border text-center">
                 <span className="text-navy-muted block text-[11px]">Replies</span>
                 <span className="font-bold text-brand text-sm">{item.seller.responseTime}</span>
               </div>
@@ -227,7 +222,7 @@ export default function ItemDetailPage() {
           <div className="p-4 rounded-2xl bg-status-amberLight/40 border border-status-amber/20 flex items-start gap-2.5 text-xs text-navy-secondary">
             <AlertTriangle className="w-4 h-4 text-status-amber flex-shrink-0 mt-0.5" />
             <span>
-              For your safety, conduct trades in public campus locations and check electronics before parting with cash.
+              Always meet in busy campus spaces like the Student Union or Library.
             </span>
           </div>
 
@@ -239,19 +234,16 @@ export default function ItemDetailPage() {
       {relatedItems.length > 0 && (
         <section className="pt-8 border-t border-subtle-border">
           <div className="flex items-center justify-between mb-6">
-            <div>
-              <h2 className="text-xl font-bold text-navy">More in {item.categoryName}</h2>
-              <p className="text-xs text-navy-secondary mt-0.5">Explore related listings on campus</p>
-            </div>
+            <h2 className="text-xl font-bold text-navy">More in {item.categoryName}</h2>
             <Link
               to={`/category/${item.categoryId}`}
-              className="text-xs font-semibold text-brand hover:underline"
+              className="text-xs font-bold text-brand hover:underline"
             >
-              View all {item.categoryName} →
+              See all →
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
             {relatedItems.map((relItem) => (
               <ItemCard key={relItem.id} item={relItem} />
             ))}

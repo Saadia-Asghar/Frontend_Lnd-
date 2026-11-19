@@ -1,14 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { BookOpen, Laptop, Home, Shirt, Bike, GraduationCap, Grid } from 'lucide-react';
+import { Shirt, BookOpen, Gamepad2, Laptop, Home, Bike, Grid } from 'lucide-react';
 
 const iconMap = {
+  Shirt,
   BookOpen,
+  Gamepad2,
   Laptop,
   Home,
-  Shirt,
-  Bike,
-  GraduationCap
+  Bike
 };
 
 export default function CategoryTile({ category, isActive = false }) {
@@ -17,49 +17,30 @@ export default function CategoryTile({ category, isActive = false }) {
   return (
     <Link
       to={`/category/${category.id}`}
-      className={`group flex items-center p-4 rounded-2xl border transition-all duration-200 ${
-        isActive
-          ? 'bg-brand text-white border-brand shadow-glow'
-          : 'bg-surface text-navy border-subtle-border hover:border-brand/40 hover:shadow-card hover:-translate-y-0.5'
-      }`}
+      className="group flex flex-col items-center text-center p-3 sm:p-4 rounded-2xl transition-transform duration-200 hover:-translate-y-1"
     >
+      {/* Icon Container matching Dribbble shot */}
       <div
-        className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors ${
+        className={`w-14 h-14 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center transition-all duration-200 shadow-sm border ${
           isActive
-            ? 'bg-white/20 text-white'
-            : 'bg-brand-light text-brand group-hover:bg-brand group-hover:text-white'
+            ? 'bg-brand text-white border-brand shadow-glow'
+            : 'bg-surface border-subtle-border group-hover:border-brand/40 group-hover:shadow-card'
         }`}
+        style={{
+          color: isActive ? '#FFFFFF' : category.color || '#4D7BF3'
+        }}
       >
-        <IconComponent className="w-6 h-6 stroke-[2]" />
+        <IconComponent className="w-7 h-7 sm:w-8 sm:h-8 stroke-[1.8]" />
       </div>
 
-      <div className="ml-3.5 min-w-0 flex-1">
-        <div className="flex items-center justify-between">
-          <span
-            className={`text-sm font-semibold truncate transition-colors ${
-              isActive ? 'text-white' : 'text-navy group-hover:text-brand'
-            }`}
-          >
-            {category.name}
-          </span>
-          <span
-            className={`text-[11px] px-2 py-0.5 rounded-full font-medium ml-2 ${
-              isActive
-                ? 'bg-white/20 text-white'
-                : 'bg-inset text-navy-secondary'
-            }`}
-          >
-            {category.count}
-          </span>
-        </div>
-        <p
-          className={`text-xs truncate mt-0.5 ${
-            isActive ? 'text-white/80' : 'text-navy-muted'
-          }`}
-        >
-          {category.description}
-        </p>
-      </div>
+      {/* Category Label (Centered, 12-13px, bold, clean) */}
+      <span
+        className={`mt-2.5 text-xs sm:text-[13px] font-semibold leading-tight max-w-[90px] transition-colors ${
+          isActive ? 'text-brand' : 'text-navy group-hover:text-brand'
+        }`}
+      >
+        {category.name}
+      </span>
     </Link>
   );
 }
